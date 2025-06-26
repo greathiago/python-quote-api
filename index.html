@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quote API Demo</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        display: grid;
+        place-content: center;
+        min-height: 100vh;
+        text-align: center;
+        background: #222;
+        color: #eee;
+      }
+      blockquote {
+        border-left: 4px solid #00aaff;
+        padding-left: 20px;
+        max-width: 600px;
+        margin: 40px auto;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Python Quote API Demo</h1>
+    <div id="quote-container">
+      <blockquote>
+        <p id="quote-text">Clique no botão para uma nova citação.</p>
+        <footer id="quote-author"></footer>
+      </blockquote>
+    </div>
+    <button id="new-quote-btn">Nova Citação</button>
+
+    <script>
+      const quoteText = document.getElementById("quote-text");
+      const quoteAuthor = document.getElementById("quote-author");
+      const newQuoteBtn = document.getElementById("new-quote-btn");
+
+      async function fetchQuote() {
+        try {
+          const response = await fetch("http://127.0.0.1:5000/api/quote");
+          const data = await response.json();
+          quoteText.textContent = `"${data.text}"`;
+          quoteAuthor.textContent = `— ${data.author}`;
+        } catch (error) {
+          quoteText.textContent = "Oops! Não foi possível buscar a citação.";
+          console.error("Erro:", error);
+        }
+      }
+      newQuoteBtn.addEventListener("click", fetchQuote);
+    </script>
+  </body>
+</html>
